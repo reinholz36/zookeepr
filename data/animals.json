@@ -117,6 +117,24 @@
         "hungry"
       ],
       "id": "11"
+    },
+    {
+      "name": "Rabbit",
+      "species": "Mini Lop",
+      "diet": "herbivore",
+      "personalityTraits": [
+        "anxious"
+      ],
+      "id": "12"
+    },
+    {
+      "name": "Lizard",
+      "species": "Gecko",
+      "diet": "carnivore",
+      "personalityTraits": [
+        "hungry"
+      ],
+      "id": "13"
     }
   ]
 }

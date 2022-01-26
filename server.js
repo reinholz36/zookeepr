@@ -4,10 +4,11 @@ const express = require('express');
 const { animals } = require('./data/animals');
 
 const PORT = process.env.PORT || 3001;
-
 //instantiates the server
 const app = express();
 
+//middleware: this allows the server to access the static files without having a specific server endpoint to create for it.
+app.use(express.static('public'));
 // parse incoming string or array data
 app.use(express.urlencoded({ extended: true }));
 // parse  incoming JSON data
@@ -82,7 +83,7 @@ function validateAnimal(animal) {
     if (!animal.diet || typeof animal.diet !== 'string') {
         return false;
     }
-    if (!animal.personalityTraits || typeof animal.personalityTraits !== 'string') {
+    if (!animal.personalityTraits || !Array.isArray(animal.personalityTraits)) {
         return false;
     }
     return true;
@@ -95,7 +96,7 @@ app.get('/api/animals', (req, res) => {
         results = filterByQuery(req.query, results);
     }
     res.json(results);
-})
+});
 //params route must come after the other GET route!
 app.get('/api/animals/:id', (req, res) => {
     const result = findById(req.params.id, animals);
@@ -118,6 +119,23 @@ app.post('/api/animals', (req, res) => {
         const animal = createNewAnimal(req.body, animals);
         res.json(animal);
     }
+});
+
+//getting index.html to be served from our Express.js server
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'));
+});
+
+app.get('/animals', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/animals.html'));
+});
+
+app.get('/zookeepers', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/zookeepers.html'));
+});
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'));
 });
 
 app.listen(PORT, () => {
